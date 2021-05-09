@@ -18,10 +18,10 @@ export async function refreshDiagnostics(collection: vscode.DiagnosticCollection
 			regex: new RegExp(/local\.[a-z,_]*/gm)
 		},
 	];
+	const diagnosticsByFile: Record<string, vscode.Diagnostic[]> = {};
 
 	for (const s of searches) {
 		const vars = await findInFiles(s.regex);
-		const diagnosticsByFile: Record<string, vscode.Diagnostic[]> = {};
 	
 		for (const v of vars) {
 			const varName = v.search.substring(s.keyword.length+1);
@@ -36,8 +36,8 @@ export async function refreshDiagnostics(collection: vscode.DiagnosticCollection
 			}
 		}
 	
-		for (const v in diagnosticsByFile) {
-			collection.set(vscode.Uri.file(v), diagnosticsByFile[v]);
-		}
+	}
+	for (const v in diagnosticsByFile) {
+		collection.set(vscode.Uri.file(v), diagnosticsByFile[v]);
 	}
 }
