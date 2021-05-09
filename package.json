@@ -21,7 +21,8 @@
 	"main": "./client/out/extension",
 	"contributes": {
 		"capabilities": {
-			"hoverProvider": "true"
+			"hoverProvider": "true",
+			"definitionProvider": "true"
 		},
 		"configuration": {
 			"type": "object",
