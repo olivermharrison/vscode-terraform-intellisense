@@ -22,6 +22,11 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.languages.registerCompletionItemProvider('terraform', completionItemProvider, '.');
 	vscode.languages.registerHoverProvider('terraform', hoverProvider);
 	vscode.languages.registerDefinitionProvider('terraform', definitionProvider);
+
+	const watcher = vscode.workspace.createFileSystemWatcher("**/*.tf");
+	watcher.onDidChange(async () => {
+		await refresh();
+	});
 }
 
 export function deactivate(): Thenable<void> | undefined {
