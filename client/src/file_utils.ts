@@ -20,9 +20,10 @@ export interface ISearchResult {
 	column: number;
 }
 
-export const files: IFile[] = [];
+export let files: IFile[] = [];
 
 export const readFiles = async () => {
+	files = [];
 	const workspaceFiles = await vscode.workspace.findFiles('**/*.tf', '**/node_modules/**');
 
 	for (const file of workspaceFiles) {
@@ -35,19 +36,21 @@ export const readFiles = async () => {
 	}
 };
 
-export const findInFiles = async (search: string): Promise<ISearchResult[]> => {
+export const findInFiles = async (search: RegExp): Promise<ISearchResult[]> => {
 	const results: ISearchResult[] = [];
 	for (const file of files) {
-		if (file.text.includes(search)) {
+		if (search.test(file.text)) {
 			file.text.split("\n").forEach((line, index) => {
-				if (line.includes(search)) {
-					// TODO support for multiple in occurance in same line?
-					results.push({
-						search,
-						file: file.path,
-						line: index,
-						column: line.indexOf(search),
-					});
+				const match = line.match(search);
+				if (match) {
+					for (const m of match) {
+						results.push({
+							search: m,
+							file: file.path,
+							line: index,
+							column: line.search(search),
+						});
+					}
 				}
 			});
 		}
@@ -55,4 +58,3 @@ export const findInFiles = async (search: string): Promise<ISearchResult[]> => {
 
 	return results;
 };
-

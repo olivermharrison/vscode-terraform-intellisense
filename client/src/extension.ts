@@ -5,6 +5,7 @@ import {
 import { readFiles } from './file_utils';
 import { updateLocals, updateVariables } from './tf';
 import { completionItemProvider, definitionProvider, hoverProvider, referenceProvider } from './providers';
+import { refreshDiagnostics } from './diagnostics';
 
 let client: LanguageClient;
 
@@ -12,10 +13,13 @@ const refresh = async () => {
 	await readFiles();
 	await updateVariables();
 	await updateLocals();
-
+	refreshDiagnostics(diagnostics)
 };
 
+const diagnostics = vscode.languages.createDiagnosticCollection("terraform-intellisense");
+
 export async function activate(context: vscode.ExtensionContext) {
+	context.subscriptions.push(diagnostics);
 	await refresh();
 
 	vscode.languages.registerReferenceProvider('terraform', referenceProvider);

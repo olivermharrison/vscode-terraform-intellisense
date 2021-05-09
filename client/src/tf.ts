@@ -32,8 +32,8 @@ export const updateVariables = async () => {
 			for (const v in file.json?.variable) {
 				const data = file.json.variable[v][0];
 
-				const search = await findInFiles(`variable "${v}"`);
-				const references = await findInFiles(`var.${v}`);
+				const search = await findInFiles(new RegExp(`variable "${v}"`));
+				const references = await findInFiles(new RegExp(`var.${v}`));
 
 				variables[v] = {
 					default: data.default,
@@ -62,7 +62,7 @@ export const updateLocals = async () => {
 
 				// TODO smart search... regex
 				// const search = await findInFiles(`variable "${v}"`);
-				const references = await findInFiles(`local.${local}`);
+				const references = await findInFiles(new RegExp(`local.${local}`));
 
 					locals[local] = {
 						name: local,
