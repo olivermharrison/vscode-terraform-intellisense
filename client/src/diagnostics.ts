@@ -1,6 +1,6 @@
 
 import * as vscode from 'vscode';
-import { findInFiles, ISearchResult } from './file_utils';
+import { findInFiles, ISearchResult } from './files';
 import { locals, variables } from './tf';
 
 export async function refreshDiagnostics(collection: vscode.DiagnosticCollection) {

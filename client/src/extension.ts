@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import {
 	LanguageClient
 } from 'vscode-languageclient/node';
-import { readFiles } from './file_utils';
+import { readFiles } from './files';
 import { updateLocals, updateVariables } from './tf';
 import { completionItemProvider, definitionProvider, hoverProvider, referenceProvider } from './providers';
 import { refreshDiagnostics } from './diagnostics';

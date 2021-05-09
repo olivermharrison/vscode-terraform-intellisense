@@ -1,4 +1,4 @@
-import { files, findInFiles, ISearchResult } from './file_utils';
+import { files, findInFiles, ISearchResult } from './files';
 
 interface IItem {
 	pos: {
