@@ -1,13 +1,8 @@
 import * as vscode from "vscode";
-import {
-	LanguageClient
-} from 'vscode-languageclient/node';
 import { readFiles } from './files';
 import { updateLocals, updateVariables } from './tf';
 import { completionItemProvider, definitionProvider, hoverProvider, referenceProvider } from './providers';
 import { refreshDiagnostics } from './diagnostics';
-
-let client: LanguageClient;
 
 const refresh = async (file?: string) => {
 	try {
@@ -39,8 +34,5 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate(): Thenable<void> | undefined {
-	if (!client) {
-		return undefined;
-	}
-	return client.stop();
+	return undefined;
 }
