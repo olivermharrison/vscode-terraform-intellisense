@@ -9,13 +9,13 @@ export async function refreshDiagnostics(collection: vscode.DiagnosticCollection
 			name: "Variable",
 			keyword: "var",
 			collection: variables,
-			regex: new RegExp(/var\.[a-z,_]*/gm),
+			regex: new RegExp(/var\.[a-zA-Z0-9_-]*/gm),
 		},
 		{
 			name: "Local",
 			keyword: "local",
 			collection: locals,
-			regex: new RegExp(/local\.[a-z,_]*/gm)
+			regex: new RegExp(/local\.[a-zA-Z0-9_-]*/gm)
 		},
 	];
 	const diagnosticsByFile: Record<string, vscode.Diagnostic[]> = {};
