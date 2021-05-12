@@ -53,7 +53,7 @@ export const definitionProvider: vscode.DefinitionProvider = {
 		const word = document.getText(range);
 
 		const data  = variables[word] || locals[word];
-		if (data) {
+		if (data && data.pos) {
 			const targetPos = new vscode.Position(
 				data.pos.line,
 				data.pos.column,

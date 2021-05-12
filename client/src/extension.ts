@@ -9,11 +9,15 @@ import { refreshDiagnostics } from './diagnostics';
 
 let client: LanguageClient;
 
-const refresh = async () => {
-	await readFiles();
-	await updateVariables();
-	await updateLocals();
-	refreshDiagnostics(diagnostics)
+const refresh = async (file?: string) => {
+	try {
+		await readFiles(file);
+		await updateVariables(file);
+		await updateLocals(file);
+		refreshDiagnostics(diagnostics)
+	} catch(e) {
+		console.error(e);
+	}
 };
 
 const diagnostics = vscode.languages.createDiagnosticCollection("terraform-intellisense");
@@ -28,8 +32,9 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.languages.registerDefinitionProvider('terraform', definitionProvider);
 
 	const watcher = vscode.workspace.createFileSystemWatcher("**/*.tf");
-	watcher.onDidChange(async () => {
-		await refresh();
+	watcher.onDidChange(async (uri) => {
+		const file = uri.path;
+		await refresh(file);
 	});
 }
 

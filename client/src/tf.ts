@@ -25,10 +25,14 @@ interface IVariable extends IItem {
 export let variables: Record<string, IVariable> = {};
 export let locals: Record<string, ILocal> = {};
 
-export const updateVariables = async () => {
-	variables = {};
-	for (const file of files) {
-		if (file.json.variable) {
+export const updateVariables = async (filename?: string) => {
+	if (!filename) {
+		variables = {};
+	}
+	const filesToScan = filename ? [filename] : Object.keys(files);
+	for (const f of filesToScan) {
+		const file = files[f];
+		if (file.json?.variable) {
 			for (const v in file.json?.variable) {
 				const data = file.json.variable[v][0];
 
@@ -43,8 +47,8 @@ export const updateVariables = async () => {
 					name: v,
 					pos: {
 						file: file.path,
-						line: search[0].line,
-						column: search[0].column,
+						line: search[0]?.line || 0,
+						column: search[0]?.column || 0,
 					},
 					references,
 				};
@@ -53,10 +57,14 @@ export const updateVariables = async () => {
 	}
 };
 
-export const updateLocals = async () => {
-	locals = {};
-	for (const file of files) {
-		if (file.json.locals) {
+export const updateLocals = async (filename?: string) => {
+	if (!filename) {
+		locals = {};
+	}
+	const filesToScan = filename ? [filename] : Object.keys(files);
+	for (const f of filesToScan) {
+		const file = files[f];
+		if (file.json?.locals) {
 			for (const item of file.json.locals) {
 				for (const local in item) {
 
