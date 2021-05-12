@@ -39,7 +39,11 @@ export const hoverProvider: vscode.HoverProvider = {
 		const word = document.getText(range);
 
 		if (variables[word]) {
-			return new vscode.Hover(`${variables[word].description}`)
+			return new vscode.Hover(`
+**Description**: ${variables[word].description}\n
+**Type**: ${variables[word].type.slice(2, -1)}\n
+**Default**: ${variables[word].default}
+			`)
 		} else if (locals[word]) {
 			return new vscode.Hover(`${locals[word].value}`)
 		}
